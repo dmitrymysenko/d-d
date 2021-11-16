@@ -3,6 +3,7 @@ plugins {
     id("kotlinx-serialization")
     kotlin("android")
     kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -28,7 +29,19 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            buildConfigField("String", "API_BASE_URL", Config.baseUrl)
         }
+        debug {
+            isMinifyEnabled = Config.minifyEnabled
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+
+            buildConfigField("String", "API_BASE_URL", Config.baseUrl)
+        }
+
     }
 
     compileOptions {
@@ -55,8 +68,8 @@ dependencies {
     implementation(Dependencies.Coroutines.core)
     implementation(Dependencies.Coroutines.android)
 
-    implementation(Dependencies.Dagger.dagger)
-    kapt(Dependencies.Dagger.daggerKapt)
+    implementation(Dependencies.Hilt.hilt)
+    kapt(Dependencies.Hilt.hiltDaggerCompiler)
 
     implementation(Dependencies.Kotlin.kotlin)
     implementation(Dependencies.Kotlin.serialization)
@@ -80,7 +93,14 @@ dependencies {
 
     implementation(Dependencies.Splash.splash)
 
+    implementation(Dependencies.Timber.timber)
+
     testImplementation(Dependencies.Test.jUnit)
     androidTestImplementation(Dependencies.Test.androidJUnit)
     androidTestImplementation(Dependencies.Test.espresso)
+
+    implementation(project(Dependencies.Modules.data))
+    implementation(project(Dependencies.Modules.domain))
+    implementation(project(Dependencies.Modules.util_log))
+
 }

@@ -14,11 +14,16 @@ object Dependencies {
         const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
     }
 
-    object Dagger {
+    object Hilt {
         const val version = "2.38.1"
 
-        const val dagger = "com.google.dagger:dagger:$version"
-        const val daggerKapt = "com.google.dagger:dagger-compiler:$version"
+        const val hilt = "com.google.dagger:hilt-android:$version"
+        const val hiltDaggerCompiler = "com.google.dagger:hilt-android-compiler:$version"
+        const val hiltPlugin = "com.google.dagger:hilt-android-gradle-plugin:$version"
+    }
+
+    object Inject{
+        const val javaInject = "javax.inject:javax.inject:1"
     }
 
     object Kotlin {
@@ -63,5 +68,16 @@ object Dependencies {
         const val jUnit = "junit:junit:4.13.2"
         const val androidJUnit = "androidx.test.ext:junit:1.1.2"
         const val espresso = "androidx.test.espresso:espresso-core:3.3.0"
+    }
+
+    object Timber {
+        const val timber = "com.jakewharton.timber:timber:5.0.1"
+
+    }
+
+    object Modules{
+        const val data = ":data"
+        const val domain = ":domain"
+        const val util_log = ":util-log"
     }
 }

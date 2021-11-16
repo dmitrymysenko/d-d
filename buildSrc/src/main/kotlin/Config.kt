@@ -10,6 +10,8 @@ object Config {
 
     const val packageName = "dmitry.mysenko.clean"
 
+    const val baseUrl = "\"https://www.dnd5eapi.co/api/\""
+
     const val minifyEnabled  = false
 
     fun version() = "$versionMajor.$versionMinor.$versionPatch"
