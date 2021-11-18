@@ -39,7 +39,7 @@ object Dependencies {
     }
 
     object Navigation {
-        const val version = "2.3.5"
+        const val version = "2.4.0-beta02"
         const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:$version"
         const val navigationUi = "androidx.navigation:navigation-ui-ktx:$version"
         const val navigationRuntime = "androidx.navigation:navigation-runtime-ktx:$version"
@@ -79,5 +79,6 @@ object Dependencies {
         const val data = ":data"
         const val domain = ":domain"
         const val util_log = ":util-log"
+        const val util_insets = ":util-insets"
     }
 }
