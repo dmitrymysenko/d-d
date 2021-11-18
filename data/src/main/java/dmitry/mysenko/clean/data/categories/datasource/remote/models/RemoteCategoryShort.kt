@@ -1,9 +1,9 @@
-package dmitry.mysenko.clean.data.classes.datasource.remote.models
+package dmitry.mysenko.clean.data.categories.datasource.remote.models
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RemoteCharacterClassShort(
+data class RemoteCategoryShort(
     val index: String,
     val name: String,
     val url: String

@@ -1,33 +1,34 @@
 package dmitry.mysenko.clean.ui
 
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.view.ViewTreeObserver
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import dmitry.mysenko.clean.R
-import dmitry.mysenko.clean.domain.classes.usecases.GetCharacterClassesShortUseCase
+import dmitry.mysenko.clean.domain.categories.usecases.GetCategoryItemsUseCase
+import dmitry.mysenko.clean.domain.classes.usecases.GetCharacterClassUseCase
+import dmitry.mysenko.clean.domain.races.usecases.GetCharacterRaceUseCase
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
-import android.app.UiModeManager
-import android.content.Context
-
-import android.os.Build.VERSION
-import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var getCharacterClassesShortUseCase: GetCharacterClassesShortUseCase
+    lateinit var getCategoryItemsUseCase: GetCategoryItemsUseCase
+
+    @Inject
+    lateinit var getCharacterClassUseCase: GetCharacterClassUseCase
+
+    @Inject
+    lateinit var getCharacterRaceUseCase: GetCharacterRaceUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,8 +52,9 @@ class MainActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
             isReady = true
             lifecycleScope.launch {
-                val response = getCharacterClassesShortUseCase.execute()
-                Timber.e("response $response")
+                getCharacterRaceUseCase.execute("dragonborn")
+//                getCategoryItemsUseCase.execute("races")
+                getCharacterClassUseCase.execute("warlock")
             }
         }, 2000)
 
