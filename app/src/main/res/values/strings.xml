@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">D&amp;D helper</string>
+    <string name="search">Search</string>
+    <string name="classes">classes</string>
+    <string name="races">races</string>
+    <string name="equipments">equipments</string>
+    <string name="spells">spells</string>
+    <string name="feats">feats</string>
+    <string name="monsters">monsters</string>
+    <string name="rules">rules</string>
 </resources>

@@ -95,6 +95,8 @@ dependencies {
 
     implementation(Dependencies.Timber.timber)
 
+    implementation(Dependencies.ViewBinding.delegate)
+
     testImplementation(Dependencies.Test.jUnit)
     androidTestImplementation(Dependencies.Test.androidJUnit)
     androidTestImplementation(Dependencies.Test.espresso)

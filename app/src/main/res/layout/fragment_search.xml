@@ -1,13 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true">
 
-    <Button
-        android:id="@+id/search"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_search"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="65dp"
+        android:layout_margin="16dp"
+        android:hint="@string/search"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/filters"
+        app:startIconDrawable="@drawable/ic_outline_search_24"
+        app:errorEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/filters"
+        android:layout_width="55dp"
+        android:layout_height="65dp"
+        android:text=""
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"/>
+
+    <ImageView
+        android:id="@+id/arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="search"/>
+        android:src="@drawable/ic_outline_expand_more_24"
+        app:layout_constraintTop_toTopOf="@+id/filters"
+        app:layout_constraintBottom_toBottomOf="@+id/filters"
+        app:layout_constraintStart_toStartOf="@+id/filters"
+        app:layout_constraintEnd_toEndOf="@+id/filters"
+        android:elevation="5dp" />
 
-</RelativeLayout>
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_search"
+        android:layout_marginTop="16dp">
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rb_classes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/classes"
+            android:checked="true"/>
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rb_race"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/races" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rb_equipments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/equipments" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rb_spells"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/spells" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rb_feats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/feats" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rb_monsters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/monsters" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rb_rules"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rules" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorPrimary"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_goneMarginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/radio_group"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:overScrollMode="never"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/radio_group"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2" />
+</androidx.constraintlayout.widget.ConstraintLayout>

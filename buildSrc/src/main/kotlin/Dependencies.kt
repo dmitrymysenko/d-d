@@ -72,7 +72,10 @@ object Dependencies {
 
     object Timber {
         const val timber = "com.jakewharton.timber:timber:5.0.1"
+    }
 
+    object ViewBinding {
+        const val delegate = "com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.0-beta01"
     }
 
     object Modules{
