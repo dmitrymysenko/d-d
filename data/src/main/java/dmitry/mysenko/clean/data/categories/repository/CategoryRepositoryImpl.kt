@@ -15,9 +15,9 @@ class CategoryRepositoryImpl @Inject constructor(
     private val converter: CategoryConverter
 ) : CategoryRepository {
 
-    override suspend fun getCategoryItems(category: String): ResultWrapper<List<CategoryItem>> {
+    override suspend fun getCategoryItems(category: String, name: String): ResultWrapper<List<CategoryItem>> {
         return when (val response =
-            categoriesRemoteDataSource.getAllCharacterClassesShort(category)) {
+            categoriesRemoteDataSource.getAllCharacterClassesShort(category, name)) {
             is ResultWrapper.Success -> ResultWrapper.Success(response.value.results.map { remote ->
                 converter.remoteCategoryShortToCategoryItem(
                     remote

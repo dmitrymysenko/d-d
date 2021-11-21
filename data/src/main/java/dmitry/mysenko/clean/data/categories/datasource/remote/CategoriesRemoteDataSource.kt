@@ -8,6 +8,6 @@ import javax.inject.Inject
 class CategoriesRemoteDataSource @Inject constructor(private val apiService: CategoriesService) :
     BaseRemoteDataSource() {
 
-    suspend fun getAllCharacterClassesShort(category: String): ResultWrapper<RemoteCategoriesResponse> =
-        safeApiCall { apiService.getAllCategoriesShort(category = category) }
+    suspend fun getAllCharacterClassesShort(category: String, name: String): ResultWrapper<RemoteCategoriesResponse> =
+        safeApiCall { apiService.getAllCategoriesShort(category = category, name = name) }
 }

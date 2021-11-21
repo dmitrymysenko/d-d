@@ -9,11 +9,18 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 import dmitry.mysenko.clean.R
 import dmitry.mysenko.clean.databinding.FragmentSearchBinding
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SearchFragment : Fragment(R.layout.fragment_search) {
+
+    private val viewModel: SearchViewModel by viewModels()
 
     private val viewBinding by viewBinding(FragmentSearchBinding::bind)
 
@@ -38,18 +45,29 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
             }
             radioGroup.children.forEach { child ->
-                if(child is RadioButton){
-                    child.setOnClickListener {
-                        if(!child.isChecked){
-                            radioGroup.children.forEach { view ->
-                                (view as RadioButton).isChecked = false
+//                if(child is RadioButton){
+//                    child.setOnClickListener {
+//                        if(!child.isChecked){
+//                            radioGroup.children.forEach { view ->
+//                                (view as RadioButton).isChecked = false
+//                            }
+//                            child.isChecked = true
+//                        }
+//                    }
+//                }
+                if (child is RadioButton) {
+                    child.setOnCheckedChangeListener { buttonView, isChecked ->
+                        if (isChecked) {
+                            radioGroup.children.forEach { v ->
+                                if (child != v) (v as RadioButton).isChecked = false
                             }
-                            child.isChecked = true
+                            viewModel.setNewCategory(Categories.classes)
                         }
                     }
                 }
             }
         }
+
 
 
     }

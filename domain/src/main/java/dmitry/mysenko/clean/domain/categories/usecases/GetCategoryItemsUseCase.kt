@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class GetCategoryItemsUseCase @Inject constructor(private val categoryRepository: CategoryRepository) {
 
-    suspend fun execute(category: String): ResultWrapper<List<CategoryItem>> {
-        return categoryRepository.getCategoryItems(category)
+    suspend fun execute(category: String, name: String = ""): ResultWrapper<List<CategoryItem>> {
+        return categoryRepository.getCategoryItems(category, name)
     }
 }
