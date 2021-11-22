@@ -6,10 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dmitry.mysenko.clean.domain.categories.models.CategoryItem
 import dmitry.mysenko.clean.domain.categories.usecases.GetCategoryItemsUseCase
 import dmitry.mysenko.clean.domain.response.ResultWrapper
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -30,6 +29,10 @@ class SearchViewModel @Inject constructor(
         )
     )
     val stateFlow: StateFlow<SearchState> = _state.asStateFlow()
+
+    init {
+        getListShortData(Categories.classes, "")
+    }
 
     private fun getListShortData(category: Categories, searchedText: String) {
         viewModelScope.launch {
@@ -61,44 +64,11 @@ class SearchViewModel @Inject constructor(
         when (action) {
             is SearchAction.SearchedTextAction -> {
                 when (currentState.searchScreenState) {
-//                    is SearchState.DataState -> {
-//                        _state.tryEmit(
-//                            SearchState.LoadingState(
-//                                searchedText = action.searchedText,
-//                                category = currentState.category,
-//                                data = currentState.data
-//                            )
-//                        )
-//                        getListShortData(currentState.category, action.searchedText)
-//                    }
-//                    is SearchState.EmptyState -> {
-//                        _state.tryEmit(
-//                            SearchState.LoadingState(
-//                                searchedText = action.searchedText,
-//                                category = currentState.category,
-//                                data = listOf()
-//                            )
-//                        )
-//                        getListShortData(currentState.category, action.searchedText)
-//                    }
-//                    is SearchState.ErrorState -> {
-//                        _state.tryEmit(
-//                            SearchState.LoadingState(
-//                                searchedText = action.searchedText,
-//                                category = currentState.category,
-//                                data = listOf()
-//                            )
-//                        )
-//                        getListShortData(currentState.category, action.searchedText)
-//                    }
-//                    is SearchState.LoadingState -> {
-//                        currentJob?.cancel()
-//                        _state.tryEmit(
-//                            currentState.copy(searchedText = action.searchedText)
-//                        )
-//                        getListShortData(currentState.category, action.searchedText)
-//                    }
-                    SearchScreenState.Loading -> _state.tryEmit(currentState.copy(searchedText = action.searchedText))
+                    SearchScreenState.Loading -> {
+                        if(currentState.searchedText != action.searchedText) {
+                            _state.tryEmit(currentState.copy(searchedText = action.searchedText))
+                        }
+                    }
                     SearchScreenState.Empty -> _state.tryEmit(
                         currentState.copy(
                             searchScreenState = SearchScreenState.Loading,
@@ -120,11 +90,15 @@ class SearchViewModel @Inject constructor(
                         )
                     )
                 }
-                getListShortData(currentState.category, action.searchedText)
+                    getListShortData(currentState.category, action.searchedText)
             }
             is SearchAction.CategoryAction -> {
                 when (currentState.searchScreenState) {
-                    SearchScreenState.Loading -> _state.tryEmit(currentState.copy(category = action.category))
+                    SearchScreenState.Loading -> {
+                        if(currentState.category != action.category) {
+                            _state.tryEmit(currentState.copy(category = action.category))
+                        }
+                    }
                     SearchScreenState.Empty -> _state.tryEmit(
                         currentState.copy(
                             searchScreenState = SearchScreenState.Loading,
@@ -174,8 +148,19 @@ class SearchViewModel @Inject constructor(
     }
 
     fun setNewCategory(category: Categories) {
-        Timber.e("got new category $category")
         searchStore(SearchAction.CategoryAction(category = category))
+    }
+
+    fun setNewSearchedText(text: String){
+        searchStore(SearchAction.SearchedTextAction(searchedText = text))
+    }
+
+    @FlowPreview
+    fun observeSearch(search: Flow<String>) {
+        search.distinctUntilChanged()
+            .debounce(500)
+            .onEach { searchStore(SearchAction.SearchedTextAction(searchedText = it)) }
+            .launchIn(viewModelScope)
     }
 }
 
