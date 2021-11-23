@@ -1,6 +1,7 @@
 package dmitry.mysenko.clean.ui.search
 
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -18,6 +19,7 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
 import dmitry.mysenko.clean.R
 import dmitry.mysenko.clean.databinding.FragmentSearchBinding
+import dmitry.mysenko.clean.util_recycler.DiffUtilable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.awaitClose
@@ -29,9 +31,10 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private val viewModel: SearchViewModel by viewModels()
 
-    private val viewBinding by viewBinding(FragmentSearchBinding::bind)
+    private val viewBinding by viewBinding (FragmentSearchBinding::bind)
 
     private var isFiltersOpened = false
+    private val adapter = SearchResultAdapter()
 
     @FlowPreview
     @ExperimentalCoroutinesApi
@@ -42,6 +45,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 //        }
 
         with(viewBinding) {
+            recyclerView.adapter = adapter
             filters.setOnClickListener {
                 isFiltersOpened = !isFiltersOpened
                 arrow.animate()
@@ -88,10 +92,27 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             viewModel.stateFlow
                 .onEach { state ->
                     when(state.searchScreenState){
-                        SearchScreenState.Loading -> {}
-                        SearchScreenState.Empty -> {}
-                        SearchScreenState.Data -> {}
-                        SearchScreenState.Error -> {}
+                        SearchScreenState.Loading -> {
+                            loader.isVisible = true
+                        }
+                        SearchScreenState.Empty -> {
+                            loader.isVisible = false
+                            error.isVisible = false
+                            empty.isVisible = true
+                            adapter.setList(listOf())
+                        }
+                        SearchScreenState.Data -> {
+                            loader.isVisible = false
+                            error.isVisible = false
+                            empty.isVisible = false
+                            (state.data)?.let { adapter.setList(it) }
+                        }
+                        SearchScreenState.Error -> {
+                            loader.isVisible = false
+                            error.isVisible = true
+                            empty.isVisible = false
+                            adapter.setList(listOf())
+                        }
                     }
                 }
                 .launchIn(lifecycleScope)

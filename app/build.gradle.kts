@@ -105,4 +105,5 @@ dependencies {
     implementation(project(Dependencies.Modules.domain))
     implementation(project(Dependencies.Modules.util_log))
     implementation(project(Dependencies.Modules.util_insets))
+    implementation(project(Dependencies.Modules.util_recycler))
 }

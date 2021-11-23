@@ -83,5 +83,6 @@ object Dependencies {
         const val domain = ":domain"
         const val util_log = ":util-log"
         const val util_insets = ":util-insets"
+        const val util_recycler = ":util-recycler"
     }
 }

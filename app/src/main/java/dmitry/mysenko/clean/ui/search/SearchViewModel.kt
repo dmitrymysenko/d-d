@@ -42,7 +42,11 @@ class SearchViewModel @Inject constructor(
                         SearchAction.DataAction(
                             searchedText = searchedText,
                             category = category,
-                            data = result.value
+                            data = result.value.map { SearchItem(
+                                index = it.index,
+                                name = it.name,
+                                url = it.url
+                            ) }
                         )
                     )
                 }
@@ -60,6 +64,7 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun searchStore(action: SearchAction) {
+//        Timber.e("Action = ${action} state = ${_state.value}")
         val currentState = _state.value
         when (action) {
             is SearchAction.SearchedTextAction -> {
@@ -126,7 +131,7 @@ class SearchViewModel @Inject constructor(
                 if (currentState.searchedText == action.searchedText && currentState.category == action.category) {
                     _state.tryEmit(
                         currentState.copy(
-                            searchScreenState = SearchScreenState.Data,
+                            searchScreenState = if(action.data.isEmpty()) SearchScreenState.Empty else SearchScreenState.Data,
                             data = action.data,
                             throwable = null
                         )
@@ -137,7 +142,7 @@ class SearchViewModel @Inject constructor(
                 if (currentState.searchedText == action.searchedText && currentState.category == action.category) {
                     _state.tryEmit(
                         currentState.copy(
-                            searchScreenState = SearchScreenState.Data,
+                            searchScreenState = SearchScreenState.Error,
                             data = null,
                             throwable = action.throwable
                         )
@@ -149,10 +154,6 @@ class SearchViewModel @Inject constructor(
 
     fun setNewCategory(category: Categories) {
         searchStore(SearchAction.CategoryAction(category = category))
-    }
-
-    fun setNewSearchedText(text: String){
-        searchStore(SearchAction.SearchedTextAction(searchedText = text))
     }
 
     @FlowPreview
@@ -170,7 +171,7 @@ sealed class SearchAction {
     class DataAction(
         val searchedText: String,
         val category: Categories,
-        val data: List<CategoryItem>
+        val data: List<SearchItem>
     ) : SearchAction()
 
     class ErrorAction(
@@ -184,7 +185,7 @@ data class SearchState(
     val searchScreenState: SearchScreenState,
     val searchedText: String,
     val category: Categories,
-    val data: List<CategoryItem>?,
+    val data: List<SearchItem>?,
     val throwable: Throwable?
 )
 
