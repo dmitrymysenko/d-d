@@ -9,11 +9,11 @@
         android:name="dmitry.mysenko.clean.ui.search.SearchFragment"
         android:label="SearchFragment" >
         <action
-            android:id="@+id/action_searchFragment_to_searchResultFragment"
-            app:destination="@id/searchResultFragment" />
+            android:id="@+id/action_searchFragment_to_searchDetailsFragment"
+            app:destination="@id/searchDetailsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/searchResultFragment"
-        android:name="dmitry.mysenko.clean.ui.search.SearchResultFragment"
-        android:label="SearchResultFragment" />
+        android:id="@+id/searchDetailsFragment"
+        android:name="dmitry.mysenko.clean.ui.details.SearchDetailsFragment"
+        android:label="SearchDetailsFragment" />
 </navigation>

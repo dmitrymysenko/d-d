@@ -1,30 +1,26 @@
 package dmitry.mysenko.clean.ui.search
 
 import android.os.Bundle
-import android.text.method.LinkMovementMethod
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.CalendarView
 import android.widget.RadioButton
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.os.bundleOf
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
-import dagger.hilt.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
 import dmitry.mysenko.clean.R
 import dmitry.mysenko.clean.databinding.FragmentSearchBinding
-import dmitry.mysenko.clean.util_recycler.DiffUtilable
+import dmitry.mysenko.clean.util_recycler.BaseAdapterCallback
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchFragment : Fragment(R.layout.fragment_search) {
@@ -40,12 +36,14 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        view.findViewById<Button>(R.id.search).setOnClickListener {
-//            findNavController().navigate(R.id.action_searchFragment_to_searchResultFragment)
-//        }
 
         with(viewBinding) {
             recyclerView.adapter = adapter
+            adapter.attachCallback(object : BaseAdapterCallback<SearchItem>{
+                override fun onItemClick(model: SearchItem, view: View, position: Int) {
+                    findNavController().navigate(R.id.action_searchFragment_to_searchDetailsFragment, bundleOf(Pair(URL, model.url)))
+                }
+            })
             filters.setOnClickListener {
                 isFiltersOpened = !isFiltersOpened
                 arrow.animate()
@@ -117,5 +115,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 }
                 .launchIn(lifecycleScope)
         }
+    }
+
+    companion object{
+        const val URL = "url"
     }
 }
