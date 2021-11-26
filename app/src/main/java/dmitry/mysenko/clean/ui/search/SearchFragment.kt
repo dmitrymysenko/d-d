@@ -95,20 +95,22 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                         }
                         SearchScreenState.Empty -> {
                             loader.isVisible = false
-                            error.isVisible = false
-                            empty.isVisible = true
+                            lottieErrorView.isVisible = false
+                            lottieEmptyView.isVisible = true
+                            lottieEmptyView.playAnimation()
                             adapter.setList(listOf())
                         }
                         SearchScreenState.Data -> {
                             loader.isVisible = false
-                            error.isVisible = false
-                            empty.isVisible = false
+                            lottieErrorView.isVisible = false
+                            lottieEmptyView.isVisible = false
                             (state.data)?.let { adapter.setList(it) }
                         }
                         SearchScreenState.Error -> {
                             loader.isVisible = false
-                            error.isVisible = true
-                            empty.isVisible = false
+                            lottieErrorView.isVisible = true
+                            lottieErrorView.playAnimation()
+                            lottieEmptyView.isVisible = false
                             adapter.setList(listOf())
                         }
                     }

@@ -77,6 +77,8 @@ dependencies {
     implementation(Dependencies.Lifecycle.runtimeKtx)
     implementation(Dependencies.Lifecycle.viewModelKtx)
 
+    implementation(Dependencies.Lottie.lottie)
+
     implementation(Dependencies.Navigation.navigationFragment)
     implementation(Dependencies.Navigation.navigationRuntime)
     implementation(Dependencies.Navigation.navigationUi)

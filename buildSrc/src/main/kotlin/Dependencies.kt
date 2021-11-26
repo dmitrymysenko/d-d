@@ -38,6 +38,10 @@ object Dependencies {
         const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
     }
 
+    object Lottie {
+        const val lottie = "com.airbnb.android:lottie:4.2.1"
+    }
+
     object Navigation {
         const val version = "2.4.0-beta02"
         const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:$version"
