@@ -42,11 +42,13 @@ class SearchViewModel @Inject constructor(
                         SearchAction.DataAction(
                             searchedText = searchedText,
                             category = category,
-                            data = result.value.map { SearchItem(
-                                index = it.index,
-                                name = it.name,
-                                url = it.url
-                            ) }
+                            data = result.value.map {
+                                SearchItem(
+                                    index = it.index,
+                                    name = it.name,
+                                    url = it.url
+                                )
+                            }
                         )
                     )
                 }
@@ -70,7 +72,7 @@ class SearchViewModel @Inject constructor(
             is SearchAction.SearchedTextAction -> {
                 when (currentState.searchScreenState) {
                     SearchScreenState.Loading -> {
-                        if(currentState.searchedText != action.searchedText) {
+                        if (currentState.searchedText != action.searchedText) {
                             _state.tryEmit(currentState.copy(searchedText = action.searchedText))
                         }
                     }
@@ -95,12 +97,12 @@ class SearchViewModel @Inject constructor(
                         )
                     )
                 }
-                    getListShortData(currentState.category, action.searchedText)
+                getListShortData(currentState.category, action.searchedText)
             }
             is SearchAction.CategoryAction -> {
                 when (currentState.searchScreenState) {
                     SearchScreenState.Loading -> {
-                        if(currentState.category != action.category) {
+                        if (currentState.category != action.category) {
                             _state.tryEmit(currentState.copy(category = action.category))
                         }
                     }
@@ -131,7 +133,7 @@ class SearchViewModel @Inject constructor(
                 if (currentState.searchedText == action.searchedText && currentState.category == action.category) {
                     _state.tryEmit(
                         currentState.copy(
-                            searchScreenState = if(action.data.isEmpty()) SearchScreenState.Empty else SearchScreenState.Data,
+                            searchScreenState = if (action.data.isEmpty()) SearchScreenState.Empty else SearchScreenState.Data,
                             data = action.data,
                             throwable = null
                         )
